@@ -62,6 +62,9 @@ namespace Phone_Bill_Analyzer.ViewModels
             await Task.CompletedTask;
         }
 
+        public void GotoUploadBillPage() =>
+            NavigationService.Navigate(typeof(Views.UploadBill), "");
+
         public void GotoDetailsPage() =>
             NavigationService.Navigate(typeof(Views.DetailPage), Value);
 

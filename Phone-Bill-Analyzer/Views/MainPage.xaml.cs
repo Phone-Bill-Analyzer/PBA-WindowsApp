@@ -6,6 +6,8 @@ using Windows.UI.Xaml.Navigation;
 using System.Collections.ObjectModel;
 using PBA_Application;
 using Template10.Services.NavigationService;
+using Template10.Common;
+using System.Linq;
 
 namespace Phone_Bill_Analyzer.Views
 {
@@ -19,8 +21,9 @@ namespace Phone_Bill_Analyzer.Views
 
         private void OnPhoneBillSelected(object sender, ItemClickEventArgs e)
         {
-            //ObservablePhoneBill phoneBill = (ObservablePhoneBill)e.ClickedItem;
-            //NavigationService.Navigate(typeof(Views.DetailPage), phoneBill.BillNo);
+            ObservablePhoneBill phoneBill = (ObservablePhoneBill)e.ClickedItem;
+            var nav = WindowWrapper.Current().NavigationServices.FirstOrDefault();
+            nav.Navigate(typeof(Views.DetailPage), phoneBill.BillNo);
         }
     }
 }

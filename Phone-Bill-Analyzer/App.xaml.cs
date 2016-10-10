@@ -52,7 +52,7 @@ namespace Phone_Bill_Analyzer
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             // long-running startup tasks go here
-            await Task.Delay(5000);
+            await Task.Delay(2000);
 
             NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;
