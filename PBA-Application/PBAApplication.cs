@@ -75,18 +75,18 @@ namespace PBA_Application
         public void AddBillToList(PhoneBill pb)
         {
             ObservablePhoneBill opb = new ObservablePhoneBill(pb);
+            ObservablePhoneBill old_bill = GetObservablePhoneBill(pb._billNo);
 
-            if (GetObservablePhoneBill(pb._billNo) != null)
+            if (old_bill != null)
             {
-                _phoneBillList.Remove(opb);
+                _phoneBillList.Remove(old_bill);
+                _phoneBillDictionary.Remove(pb._billNo);
                 
             }
-            else
-            {
-                _phoneBillDictionary.Add(pb._billNo, opb);
-            }
+            
 
             _phoneBillList.Add(opb);
+            _phoneBillDictionary.Add(pb._billNo, opb);
         }
 
     }
