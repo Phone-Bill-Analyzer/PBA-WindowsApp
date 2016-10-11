@@ -89,7 +89,7 @@
                 <DataTemplate>
                     <StackPanel>
                         <TextBlock Text="{Binding BillNo}"/>
-                        <TextBlock Text="{Binding DueDate}"/>
+                        <TextBlock Text="{Binding BillDate}"/>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

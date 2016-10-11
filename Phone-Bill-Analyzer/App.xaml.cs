@@ -7,6 +7,7 @@ using Template10.Common;
 using System;
 using System.Linq;
 using Windows.UI.Xaml.Data;
+using PBA_Application;
 
 namespace Phone_Bill_Analyzer
 {
@@ -52,7 +53,9 @@ namespace Phone_Bill_Analyzer
         public override async Task OnStartAsync(StartKind startKind, IActivatedEventArgs args)
         {
             // long-running startup tasks go here
-            await Task.Delay(2000);
+            //await Task.Delay(2000);
+            PBAApplication.getInstance();
+            DBHelper.getInstance();
 
             NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;

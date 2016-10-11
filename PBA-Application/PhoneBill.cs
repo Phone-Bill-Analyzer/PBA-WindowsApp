@@ -4,48 +4,69 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Storage;
 using Windows.Web.Http;
 
 namespace PBA_Application
 {
-    internal class PhoneBill
+    public sealed class PhoneBill
     {
         internal string _phoneNo, _billNo, _billType, _password;
-        internal DateTime _dueDate, _fromDate, _toDate, _billDate;
+        private DateTime _dueDate, _fromDate, _toDate, _billDate;
         private List<CallDetailItem> _callDetails;
         private StorageFile _file;
 
-        /*
+        public string BillType
+        {
+            get { return _billType; }
+            set { _billType = value; }
+        }
+
+        public string FilePassword
+        {
+            get { return _password; }
+            set { _password = value; }
+        }
+
         public PhoneBill(StorageFile file)
         {
             _file = file;
             _callDetails = new List<CallDetailItem>();
         }
-        */
 
-        private string BillDate
+        internal PhoneBill()
+        {
+            _callDetails = new List<CallDetailItem>();
+        }
+
+        internal string BillDate
         {
             get { return _billDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat); }
             set { _billDate = DateTime.Parse(value); }
         }
 
-        private string FromDate
+        internal string FromDate
         {
             get { return _fromDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat); }
             set { _fromDate = DateTime.Parse(value); }
         }
 
-        private string ToDate
+        internal string ToDate
         {
             get { return _toDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat); }
             set { _toDate = DateTime.Parse(value); }
         }
 
-        private string DueDate
+        internal string DueDate
         {
             get { return _dueDate.ToString(CultureInfo.CurrentCulture.DateTimeFormat); }
             set { _dueDate = DateTime.Parse(value); }
+        }
+
+        public IAsyncOperation<bool> ReadPDFFile()
+        {
+            return __ReadPDFFile().AsAsyncOperation();
         }
 
         private async Task<bool> __ReadPDFFile()
@@ -81,16 +102,14 @@ namespace PBA_Application
                     BillDate = billDetails.GetValue("BillDate").ToString();
                     _billNo = billDetails.GetValue("BillNo").ToString();
 
-                    try
-                    {
-                        FromDate = billDetails.GetValue("FromDate").ToString();
-                        ToDate = billDetails.GetValue("ToDate").ToString();
-                        DueDate = billDetails.GetValue("DueDate").ToString();
-                    }
-                    catch (Exception ex)
-                    {
-                        // Ignore
-                    }
+                    try { FromDate = billDetails.GetValue("FromDate").ToString(); }
+                    catch (Exception ex) {}
+
+                    try { ToDate = billDetails.GetValue("ToDate").ToString(); }
+                    catch (Exception ex){}
+
+                    try{ DueDate = billDetails.GetValue("DueDate").ToString(); }
+                    catch (Exception ex){}
 
                     JArray call_details = (JArray)result.GetValue("CallDetails");
                     CallDetailItem cd = null;
@@ -131,13 +150,14 @@ namespace PBA_Application
             }
 
             // Insert Bill Meta Data
-            sql = "INSERT INTO BillMetaData VALUES(?,?,?,?,?,?,?)";
+            sql = "INSERT INTO BillMetaData VALUES(?,?,?,?,?,?,?,?)";
             query = new DBQuery();
             query.Query = sql;
             query.addQueryData(_billNo);
             query.addQueryData(_billType);
             query.addQueryData(_phoneNo);
             query.addQueryData(BillDate);
+            query.addQueryData(_billDate.Ticks / (10000*1000));   // Ticks in seconds
             query.addQueryData(FromDate);
             query.addQueryData(ToDate);
             query.addQueryData(DueDate);
@@ -146,15 +166,17 @@ namespace PBA_Application
             // Insert Call Details
             foreach (CallDetailItem cd in _callDetails)
             {
-                sql = "INSERT INTO BillCallDetails VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
+                sql = "INSERT INTO BillCallDetails VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 query = new DBQuery();
                 query.Query = sql;
                 query.addQueryData(_billNo);
                 query.addQueryData(cd._phoneNo);
                 query.addQueryData(cd._callDate);
                 query.addQueryData(cd._callTime);
+                query.addQueryData(cd._callDateTime);
                 query.addQueryData(cd._duration);
                 query.addQueryData(cd._callCost);
+                query.addQueryData(cd._callDirection);
                 query.addQueryData(cd._comments);
                 query.addQueryData(cd._freeCall);
                 query.addQueryData(cd._roamingCall);

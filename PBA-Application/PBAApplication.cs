@@ -10,6 +10,8 @@ namespace PBA_Application
     {
         private static PBAApplication instance;
         private DBHelper dbHelper;
+        private Dictionary<string, ObservablePhoneBill> _phoneBillDictionary;
+        private List<ObservablePhoneBill> _phoneBillList;
 
         public static PBAApplication getInstance()
         {
@@ -23,7 +25,14 @@ namespace PBA_Application
 
         private PBAApplication()
         {
+            _phoneBillList = new List<ObservablePhoneBill>();
             dbHelper = DBHelper.getInstance();
+            LoadPhoneBillListFromDB();
+        }
+
+        public IEnumerable<ObservablePhoneBill> PhoneBillList
+        {
+            get { return _phoneBillList.AsEnumerable(); }
         }
 
         internal bool DeletePhoneBill(string billNo)
@@ -46,6 +55,38 @@ namespace PBA_Application
 
             bool success = DBHelper.getInstance().executeQueries(queryList);
             return success;
+        }
+
+        private void LoadPhoneBillListFromDB()
+        {
+            _phoneBillList.Clear();
+
+            _phoneBillList.AddRange(DBHelper.getInstance().GetPhoneBillList());
+            _phoneBillDictionary = _phoneBillList.ToDictionary(x => x.BillNo);
+        }
+
+        public ObservablePhoneBill GetObservablePhoneBill(string bill_no)
+        {
+            ObservablePhoneBill pb;
+            _phoneBillDictionary.TryGetValue(bill_no, out pb);
+            return pb;
+        }
+
+        public void AddBillToList(PhoneBill pb)
+        {
+            ObservablePhoneBill opb = new ObservablePhoneBill(pb);
+
+            if (GetObservablePhoneBill(pb._billNo) != null)
+            {
+                _phoneBillList.Remove(opb);
+                
+            }
+            else
+            {
+                _phoneBillDictionary.Add(pb._billNo, opb);
+            }
+
+            _phoneBillList.Add(opb);
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 
 namespace PBA_Application
 {
@@ -8,6 +9,7 @@ namespace PBA_Application
         internal float _callCost;
         internal string _freeCall, _roamingCall, _smsCall, _stdCall, _callDirection;
         internal int _pulse;
+        internal long _callDateTime;
 
         public CallDetailItem()
         {
@@ -15,6 +17,7 @@ namespace PBA_Application
             _freeCall = _roamingCall = _smsCall = _stdCall = _callDirection = "";
             _callCost = 0;
             _pulse = 0;
+            _callDateTime = 0;
         }
 
         public CallDetailItem(string call_detail_string)
@@ -41,6 +44,8 @@ namespace PBA_Application
                 _smsCall = call_detail.GetValue("smsCall").ToString();
                 _stdCall = call_detail.GetValue("stdCall").ToString();
                 _pulse = (int)call_detail.GetValue("pulse");
+
+                _callDateTime = DateTime.Parse(_callDate + " " + _callTime).Millisecond;
 
             }
             catch (System.Exception e)

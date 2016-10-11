@@ -133,6 +133,10 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Charts\all_contacts_table.html" />
+    <Content Include="Charts\contact_group_summary.html" />
+    <Content Include="Charts\itemized_bill_details.html" />
+    <Content Include="Charts\top_5_pie_chart.html" />
     <Content Include="Help.htm" />
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />

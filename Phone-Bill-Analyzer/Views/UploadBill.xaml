@@ -67,13 +67,15 @@
 
                 <Button x:Name="Browse_File"
                         Content="Browse File"
-                        Click="BrowseFile"/>
-                
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Value, Mode=OneWay, FallbackValue=DesigntimeValue}" />
+                        Click="{x:Bind ViewModel.BrowseFile}" >
+                </Button>
+
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.FileName, Mode=OneWay}" />
 
                 <Button x:Name="Parse_File"
                         Content="Parse File"
-                        Click="ParseFile"/>
+                        Click="{x:Bind ViewModel.ParseFile}" >
+                </Button>
 
                 <TextBlock Margin="5,10,5,5" LineHeight="24"
                                TextWrapping="Wrap">

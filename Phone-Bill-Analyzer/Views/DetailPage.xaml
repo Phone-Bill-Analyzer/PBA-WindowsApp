@@ -50,19 +50,44 @@
         <controls:PageHeader x:Name="pageHeader" Frame="{x:Bind Frame}"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" Text="Detail Page" />
+                             RelativePanel.AlignTopWithPanel="True" Text="Analyze Phone Bill" />
 
         <!--  content  -->
-        <ScrollViewer Padding="12,8,0,0" RelativePanel.AlignBottomWithPanel="True"
-                      RelativePanel.AlignLeftWithPanel="True"
-                      RelativePanel.AlignRightWithPanel="True"
-                      RelativePanel.Below="pageHeader"
-                      VerticalScrollBarVisibility="Auto">
-            <StackPanel>
-                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="You passed:" />
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.Value, Mode=OneWay, FallbackValue=DesigntimeValue}" />
-            </StackPanel>
-        </ScrollViewer>
+        <Pivot x:Name="MyPivot" Grid.Row="1"
+               RelativePanel.AlignBottomWithPanel="True"
+               RelativePanel.AlignLeftWithPanel="True"
+               RelativePanel.AlignRightWithPanel="True"
+               RelativePanel.Below="pageHeader">
+
+            <PivotItem Header="Summarize By Contacts">
+                <WebView 
+                    x:Name="Summarize_By_Contacts"
+                    Source="{x:Bind ViewModel.PI1}"
+                    NavigationStarting="{x:Bind ViewModel.OnNavigationStarting}"/>
+            </PivotItem>
+
+            <PivotItem Header="Itemized Bill">
+                <WebView 
+                    x:Name="Itemized_Bill"
+                    Source="{x:Bind ViewModel.PI2}"
+                    NavigationStarting="{x:Bind ViewModel.OnNavigationStarting}"/>
+            </PivotItem>
+
+            <PivotItem Header="Top 5 Contacts">
+                <WebView 
+                    x:Name="Top_5_Contacts"
+                    Source="{x:Bind ViewModel.PI3}"
+                    NavigationStarting="{x:Bind ViewModel.OnNavigationStarting}"/>
+            </PivotItem>
+
+            <PivotItem Header="Contact Group Summary">
+                <WebView 
+                    x:Name="Contact_Group_Summary"
+                    Source="{x:Bind ViewModel.PI4}"
+                    NavigationStarting="{x:Bind ViewModel.OnNavigationStarting}"/>
+            </PivotItem>
+
+        </Pivot>
 
     </RelativePanel>
 </Page>

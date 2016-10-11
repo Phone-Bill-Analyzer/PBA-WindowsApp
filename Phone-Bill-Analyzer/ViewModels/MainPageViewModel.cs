@@ -22,20 +22,11 @@ namespace Phone_Bill_Analyzer.ViewModels
         string _Value = "Gas";
         public string Value { get { return _Value; } set { Set(ref _Value, value); } }
 
-        private List<ObservablePhoneBill> _PhoneBillList = new List<ObservablePhoneBill>();
+        private List<ObservablePhoneBill> _PhoneBillList = PBAApplication.getInstance().PhoneBillList.ToList();
         public List<ObservablePhoneBill> PhoneBillList
         {
-            get {
-                _PhoneBillList.Add(new ObservablePhoneBill("Test123"));
-                _PhoneBillList.Add(new ObservablePhoneBill("TestABC"));
-                _PhoneBillList.Add(new ObservablePhoneBill("TestXYZ"));
-                _PhoneBillList.Add(new ObservablePhoneBill("Test456"));
-                _PhoneBillList.Add(new ObservablePhoneBill("TestLMN"));
-                _PhoneBillList.Add(new ObservablePhoneBill("Test789"));
-                _PhoneBillList.Add(new ObservablePhoneBill("TestPQR"));
-                _PhoneBillList.Add(new ObservablePhoneBill("Test000"));
-                return _PhoneBillList;
-            }
+            get { return _PhoneBillList; }
+            set { Set(ref _PhoneBillList, value); }
         }
         
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
@@ -44,6 +35,9 @@ namespace Phone_Bill_Analyzer.ViewModels
             {
                 Value = suspensionState[nameof(Value)]?.ToString();
             }
+
+            PhoneBillList = PBAApplication.getInstance().PhoneBillList.ToList();
+
             await Task.CompletedTask;
         }
 
