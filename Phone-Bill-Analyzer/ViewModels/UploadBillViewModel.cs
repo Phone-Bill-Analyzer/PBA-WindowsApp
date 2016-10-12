@@ -35,9 +35,12 @@ namespace Phone_Bill_Analyzer.ViewModels
             set { Set(ref _fileName, value); }
         }
 
+        public string FilePassword { get; set; }
+
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
             //FileName = (suspensionState.ContainsKey(nameof(FileName))) ? suspensionState[nameof(FileName)]?.ToString() : parameter?.ToString();
+            FilePassword = "";
             await Task.CompletedTask;
         }
 
@@ -97,7 +100,7 @@ namespace Phone_Bill_Analyzer.ViewModels
 
             PhoneBill pb = new PhoneBill(_file);
             pb.BillType = _serviceProvider.Code;
-            pb.FilePassword = "";
+            pb.FilePassword = FilePassword;
 
             Views.Busy.SetBusy(true, "Please Wait...We are reading your bill information");
             bool success = await pb.ReadPDFFile();

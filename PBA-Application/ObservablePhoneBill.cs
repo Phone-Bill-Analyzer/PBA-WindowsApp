@@ -26,7 +26,7 @@ namespace PBA_Application
 
         public string BillDate
         {
-            get { return _phoneBill._billDate.ToString("d"); }
+            get { return "Bill Date: " + _phoneBill._billDate.ToString("d"); }
         }
 
         public string BillType

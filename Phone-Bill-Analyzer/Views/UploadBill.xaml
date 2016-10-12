@@ -53,44 +53,67 @@
                              RelativePanel.AlignTopWithPanel="True" Text="Upload New Phone Bill" />
 
         <!--  content  -->
-        <ScrollViewer RelativePanel.AlignBottomWithPanel="True"
-                      RelativePanel.AlignLeftWithPanel="True"
-                      RelativePanel.AlignRightWithPanel="True"
-                      RelativePanel.Below="pageHeader"
-                      VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10,5,10,5">
 
-                <ComboBox x:Name="Service_Providers"
-                          Header="Select Service Provider"
-                          ItemsSource="{x:Bind ViewModel.ServiceProviderList}"
-                          SelectionChanged="{x:Bind ViewModel.ServiceProviderSelected}"
-                          />
+        <TextBlock x:Name="Combobox_Header"
+                   RelativePanel.Below="pageHeader"
+                   Margin="15,5,5,5"
+                   Style="{StaticResource SubtitleTextBlockStyle}" 
+                   Text="Select mobile service provider: " >
+        </TextBlock>
 
-                <Button x:Name="Browse_File"
-                        Content="Browse File"
-                        Click="{x:Bind ViewModel.BrowseFile}" >
-                </Button>
+        <ComboBox x:Name="Service_Providers"
+                  RelativePanel.Below="pageHeader"
+                  RelativePanel.RightOf="Combobox_Header"
+                  Width="150"
+                  Margin="5,5,5,5"
+                  ItemsSource="{x:Bind ViewModel.ServiceProviderList}"
+                  SelectionChanged="{x:Bind ViewModel.ServiceProviderSelected}" >
+        </ComboBox>
 
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.FileName, Mode=OneWay}" />
+        <StackPanel x:Name="File_Row"
+                    RelativePanel.Below="Combobox_Header"
+                    Margin="15,5,5,5"
+                    Orientation="Horizontal">
 
-                <Button x:Name="Parse_File"
-                        Content="Parse File"
-                        Click="{x:Bind ViewModel.ParseFile}" >
-                </Button>
+            <Button x:Name="Browse_File"
+                Content="Browse File"
+                RelativePanel.Below="Service_Providers"
+                Click="{x:Bind ViewModel.BrowseFile}" >
+            </Button>
 
-                <TextBlock Margin="5,10,5,5" LineHeight="24"
-                               TextWrapping="Wrap">
-                    Select a Phone Bill in <Bold>PDF</Bold> format.
-                    <LineBreak/><LineBreak/>
-                    <Bold>Note: </Bold> Do not scan the paper. Use the original PDF bill provided by the service provider.
-                    <LineBreak/><LineBreak/>
-                    Currently we support only limited number of service providers in Singapore and India.
-                    <LineBreak/><LineBreak/>
-                    Please contact the developer if you would like us to support other service providers in your country.
-                </TextBlock>
+            <TextBlock Margin="10,0,0,0" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.FileName, Mode=OneWay}" />
 
-            </StackPanel>
-        </ScrollViewer>
+        </StackPanel>
+
+        <StackPanel x:Name="Password_Row"
+                    RelativePanel.Below="File_Row"
+                    Margin="15,5,5,5"
+                    Orientation="Horizontal">
+
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="If file is password protected, enter password: " />
+
+            <TextBox Margin="10,0,0,0" Text="{x:Bind ViewModel.FilePassword, Mode=TwoWay}" InputScope="Password"  Width="150"/>
+
+        </StackPanel>
+
+        <Button x:Name="Parse_File"
+                Content="Parse File"
+                Margin="15,5,5,5"
+                RelativePanel.Below="Password_Row"
+                Click="{x:Bind ViewModel.ParseFile}" >
+        </Button>
+
+        <TextBlock Margin="15,10,5,5" LineHeight="24" RelativePanel.Below="Parse_File"
+                        TextWrapping="Wrap">
+            Select a Phone Bill in <Bold>PDF</Bold> format.
+            <LineBreak/><LineBreak/>
+            <Bold>Note: </Bold> Do not scan the paper. Use the original PDF bill provided by the service provider.
+            <LineBreak/><LineBreak/>
+            Currently we support only limited number of service providers in Singapore and India.
+            <LineBreak/><LineBreak/>
+            Please contact the developer if you would like us to support other service providers in your country.
+        </TextBlock>
+
 
     </RelativePanel>
 </Page>
