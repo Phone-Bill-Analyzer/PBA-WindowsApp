@@ -63,7 +63,8 @@
                 <WebView 
                     x:Name="Summarize_By_Contacts"
                     Source="{x:Bind ViewModel.PI1}"
-                    NavigationStarting="{x:Bind ViewModel.OnNavigationStarting}"/>
+                    NavigationStarting="{x:Bind ViewModel.OnNavigationStarting}"
+                    NavigationCompleted="{x:Bind ViewModel.OnNavigationCompleted}"/>
             </PivotItem>
 
             <PivotItem Header="Itemized Bill">

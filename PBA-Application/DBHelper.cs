@@ -9,12 +9,12 @@ using Windows.ApplicationModel.Resources;
 
 namespace PBA_Application
 {
-    public class DBHelper
+    internal class DBHelper
     {
         private static DBHelper instance;
         private string dbPath;
 
-        public static DBHelper getInstance()
+        internal static DBHelper getInstance()
         {
             if (instance == null)
             {
@@ -111,6 +111,54 @@ namespace PBA_Application
                 statement.Step();
 
             }
+        }
+
+        internal List<ContactData> GetAppContactList()
+        {
+            List<ContactData> contact_list = new List<ContactData>();
+
+            using (SQLiteConnection dbConn = new SQLiteConnection(dbPath))
+            {
+                string sql = "SELECT distinct cd.PhoneNo, case when cn.Name is null then '' else cn.Name end as Name, " +
+                    "case when groups.GroupName is null then '' else groups.GroupName end as GroupName " + 
+                    "FROM BillCallDetails as cd left outer join ContactNames as cn on cd.PhoneNo = cn.PhoneNo " +
+                    "left outer join ContactGroups as groups on cd.PhoneNo = groups.PhoneNo " +
+                    "where cd.PhoneNo <> 'data' order by cd.PhoneNo";
+
+                using (var statement = dbConn.Prepare(sql))
+                {
+                    while (statement.Step() == SQLiteResult.ROW)
+                    {
+                        ContactData cd = new ContactData();
+                        cd.PhoneNo = statement[0].ToString();
+                        cd.ContactName = statement[1].ToString();
+                        cd.ContactGroup = statement[2].ToString();
+                        contact_list.Add(cd);
+                    }
+                }
+            }
+
+            return contact_list;
+        }
+
+        internal List<string> GetDistinctPhoneNumbers()
+        {
+            List<string> phone_no_list = new List<string>();
+
+            using (SQLiteConnection dbConn = new SQLiteConnection(dbPath))
+            {
+                string sql = @"SELECT DISTINCT PhoneNo from BillCallDetails";
+
+                using (var statement = dbConn.Prepare(sql))
+                {
+                    while (statement.Step() == SQLiteResult.ROW)
+                    {
+                        phone_no_list.Add(statement[0].ToString());
+                    }
+                }
+            }
+
+            return phone_no_list;
         }
 
         internal bool executeQueries(List<DBQuery> queryList)

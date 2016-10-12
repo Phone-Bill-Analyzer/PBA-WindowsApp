@@ -13,7 +13,7 @@ namespace PBA_Application
     public sealed class PhoneBill
     {
         internal string _phoneNo, _billNo, _billType, _password;
-        private DateTime _dueDate, _fromDate, _toDate, _billDate;
+        internal DateTime _dueDate, _fromDate, _toDate, _billDate;
         private List<CallDetailItem> _callDetails;
         private StorageFile _file;
 

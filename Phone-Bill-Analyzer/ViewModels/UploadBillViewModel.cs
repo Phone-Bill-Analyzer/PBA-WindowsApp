@@ -10,6 +10,7 @@ using Template10.Services.NavigationService;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
 namespace Phone_Bill_Analyzer.ViewModels
@@ -20,17 +21,10 @@ namespace Phone_Bill_Analyzer.ViewModels
         {
         }
 
-        private List<string> _serviceProviders = new List<string>();
-        public List<string> ServiceProviderList
+        private ServiceProvider _serviceProvider;
+        public List<ServiceProvider> ServiceProviderList
         {
-            get {
-                if (_serviceProviders.Count <= 0)
-                {
-                    _serviceProviders.Add("SingTel");
-                    _serviceProviders.Add("AirTel");
-                }
-                return _serviceProviders;
-            }
+            get { return PBAApplication.getInstance().ServiceProviderList.ToList(); }
         }
 
         private StorageFile _file;
@@ -85,17 +79,29 @@ namespace Phone_Bill_Analyzer.ViewModels
             }
         }
 
+        public void ServiceProviderSelected(object sender, SelectionChangedEventArgs e)
+        {
+            _serviceProvider = (ServiceProvider)((ComboBox)sender).SelectedItem;
+        }
+
         public async void ParseFile(object sender, RoutedEventArgs e)
         {
+            MessageDialog messageDialog;
+
+            if (_serviceProvider == null)
+            {
+                messageDialog = new MessageDialog("Please select a service provider from the list.");
+                await messageDialog.ShowAsync();
+                return;
+            }
+
             PhoneBill pb = new PhoneBill(_file);
-            pb.BillType = "STPPM";
+            pb.BillType = _serviceProvider.Code;
             pb.FilePassword = "";
 
             Views.Busy.SetBusy(true, "Please Wait...We are reading your bill information");
             bool success = await pb.ReadPDFFile();
             Views.Busy.SetBusy(false);
-
-            MessageDialog messageDialog;
 
             if (success)
             {

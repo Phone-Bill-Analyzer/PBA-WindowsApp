@@ -109,12 +109,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallDetailItem.cs" />
+    <Compile Include="ContactData.cs" />
     <Compile Include="DBHelper.cs" />
     <Compile Include="DBQuery.cs" />
     <Compile Include="ObservablePhoneBill.cs" />
     <Compile Include="PBAApplication.cs" />
     <Compile Include="PhoneBill.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceProvider.cs" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

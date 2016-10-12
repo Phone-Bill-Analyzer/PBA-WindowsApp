@@ -55,7 +55,6 @@ namespace Phone_Bill_Analyzer
             // long-running startup tasks go here
             //await Task.Delay(2000);
             PBAApplication.getInstance();
-            DBHelper.getInstance();
 
             NavigationService.Navigate(typeof(Views.MainPage));
             await Task.CompletedTask;

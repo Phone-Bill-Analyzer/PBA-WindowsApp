@@ -63,6 +63,7 @@
                 <ComboBox x:Name="Service_Providers"
                           Header="Select Service Provider"
                           ItemsSource="{x:Bind ViewModel.ServiceProviderList}"
+                          SelectionChanged="{x:Bind ViewModel.ServiceProviderSelected}"
                           />
 
                 <Button x:Name="Browse_File"

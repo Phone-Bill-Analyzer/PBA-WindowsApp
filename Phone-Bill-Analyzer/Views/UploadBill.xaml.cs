@@ -11,6 +11,7 @@ namespace Phone_Bill_Analyzer.Views
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Disabled;
         }
+        
     }
 }
 

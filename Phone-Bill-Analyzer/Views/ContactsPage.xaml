@@ -12,7 +12,7 @@
       mc:Ignorable="d">
 
     <Page.DataContext>
-        <vm:UploadBillViewModel x:Name="ViewModel" />
+        <vm:ContactsPageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -53,43 +53,60 @@
                              RelativePanel.AlignTopWithPanel="True" Text="Upload New Phone Bill" />
 
         <!--  content  -->
-        <ScrollViewer RelativePanel.AlignBottomWithPanel="True"
-                      RelativePanel.AlignLeftWithPanel="True"
-                      RelativePanel.AlignRightWithPanel="True"
-                      RelativePanel.Below="pageHeader"
-                      VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="10,5,10,5">
+        <Button x:Name="Sync_Contacts_From_Device"
+                Content="Synchronize Contacts from Device"
+                RelativePanel.Below="pageHeader"
+                Margin="10,5,0,0"
+                Click="{x:Bind ViewModel.SyncContactsFromDevice}" Width="Auto" >
+        </Button>
 
-                <ComboBox x:Name="Service_Providers"
-                          Header="Select Service Provider"
-                          ItemsSource="{x:Bind ViewModel.ServiceProviderList}"
-                          />
+        <Button x:Name="Save_Contact_Data"
+                Content="Save Contact Data"
+                RelativePanel.Below="pageHeader"
+                RelativePanel.RightOf="Sync_Contacts_From_Device"
+                Margin="10,5,0,0"
+                Click="{x:Bind ViewModel.SaveContactData}" Width="Auto" >
+        </Button>
+        
+        <ListView 
+            ItemsSource="{Binding ContactList}" 
+            Margin="10,20,5,5" 
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.Below="Sync_Contacts_From_Device">
+            
+            <ListView.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Height="30" Background="DarkGray">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Phone No" Margin="10,2,10,2" VerticalAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock Grid.Column="1" Text="Contact Name" Margin="20,2,10,2" VerticalAlignment="Center" FontWeight="Bold"/>
+                        <TextBlock Grid.Column="2" Text="Contact Group" Margin="20,2,10,2" VerticalAlignment="Center" FontWeight="Bold"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.HeaderTemplate>
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{Binding PhoneNo}" Margin="0,2,0,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="1" Text="{Binding ContactName, Mode=TwoWay}" Margin="5,2,5,2" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="2" Text="{Binding ContactGroup, Mode=TwoWay}" Margin="5,2,5,2" VerticalAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
 
-                <Button x:Name="Browse_File"
-                        Content="Browse File"
-                        Click="{x:Bind ViewModel.BrowseFile}" >
-                </Button>
-
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.FileName, Mode=OneWay}" />
-
-                <Button x:Name="Parse_File"
-                        Content="Parse File"
-                        Click="{x:Bind ViewModel.ParseFile}" >
-                </Button>
-
-                <TextBlock Margin="5,10,5,5" LineHeight="24"
-                               TextWrapping="Wrap">
-                    Select a Phone Bill in <Bold>PDF</Bold> format.
-                    <LineBreak/><LineBreak/>
-                    <Bold>Note: </Bold> Do not scan the paper. Use the original PDF bill provided by the service provider.
-                    <LineBreak/><LineBreak/>
-                    Currently we support only limited number of service providers in Singapore and India.
-                    <LineBreak/><LineBreak/>
-                    Please contact the developer if you would like us to support other service providers in your country.
-                </TextBlock>
-
-            </StackPanel>
-        </ScrollViewer>
 
     </RelativePanel>
 </Page>

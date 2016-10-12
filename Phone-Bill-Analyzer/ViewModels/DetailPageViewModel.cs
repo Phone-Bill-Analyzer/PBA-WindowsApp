@@ -60,13 +60,18 @@ namespace Phone_Bill_Analyzer.ViewModels
 
         public void OnNavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
         {
+            Views.Busy.SetBusy(true, "Wait Madi...");
             ObservablePhoneBill pb = PBAApplication.getInstance().GetObservablePhoneBill(BillNo);
             if (pb != null)
             {
                 sender.AddWebAllowedObject("phone_bill", pb);
             }
         }
-        
+
+        public void OnNavigationCompleted(WebView sender, WebViewNavigationCompletedEventArgs args)
+        {
+            Views.Busy.SetBusy(false);
+        }
     }
 }
 

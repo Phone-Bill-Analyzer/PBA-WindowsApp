@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Globalization;
 using Windows.Foundation.Metadata;
 
 namespace PBA_Application
@@ -15,7 +16,7 @@ namespace PBA_Application
 
         public string BillNo
         {
-            get { return _phoneBill._billNo; }
+            get { return BillType + " No: " + _phoneBill._billNo; }
         }
 
         public string DueDate
@@ -25,7 +26,16 @@ namespace PBA_Application
 
         public string BillDate
         {
-            get { return _phoneBill.BillDate; }
+            get { return _phoneBill._billDate.ToString("d"); }
+        }
+
+        public string BillType
+        {
+            get
+            {
+                if (_phoneBill.BillType.Equals("STPPM")) { return "SingTel Bill"; }
+                return "";
+            }
         }
 
         public string summarizeByContactNames()

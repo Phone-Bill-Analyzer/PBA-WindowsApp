@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Template10.Common;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
+using Windows.ApplicationModel.Contacts;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -17,33 +18,21 @@ namespace Phone_Bill_Analyzer.ViewModels
     public class ContactsPageViewModel : ViewModelBase
     {
         public ContactsPageViewModel()
-        {
-        }
+        {}
 
-        private List<string> _serviceProviders = new List<string>();
-        public List<string> ServiceProviderList
+        private List<ContactData> _contactList = new List<ContactData>();
+        public List<ContactData> ContactList
         {
-            get {
-                if (_serviceProviders.Count <= 0)
-                {
-                    _serviceProviders.Add("SingTel");
-                    _serviceProviders.Add("AirTel");
-                }
-                return _serviceProviders;
-            }
-        }
-
-        private StorageFile _file;
-        private string _fileName = "Select a file";
-        public string FileName
-        {
-            get { return _fileName; }
-            set { Set(ref _fileName, value); }
+            get { return _contactList; }
+            set { Set(ref _contactList, value); }
         }
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
             //FileName = (suspensionState.ContainsKey(nameof(FileName))) ? suspensionState[nameof(FileName)]?.ToString() : parameter?.ToString();
+
+            ContactList = PBAApplication.getInstance().GetAppContactList().ToList();
+
             await Task.CompletedTask;
         }
 
@@ -62,53 +51,36 @@ namespace Phone_Bill_Analyzer.ViewModels
             await Task.CompletedTask;
         }
 
-        public async void BrowseFile()
+        public async void SaveContactData(object sender, RoutedEventArgs e)
         {
-            var picker = new Windows.Storage.Pickers.FileOpenPicker();
-            picker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
-            picker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.Downloads;
-
-            picker.FileTypeFilter.Add(".pdf");
-
-            Views.Busy.SetBusy(true, "Wait Madi...");
-            _file = await picker.PickSingleFileAsync();
+            Views.Busy.SetBusy(true, "Saving Data.. Please Wait...");
+            PBAApplication.getInstance().SaveContactData(ContactList);
             Views.Busy.SetBusy(false);
 
-            if (_file != null)
-            {
-                // Application now has read/write access to the picked file
-                FileName = _file.Name;
-            }
-            else
-            {
-                // Operation cancelled.
-            }
+            MessageDialog messageDialog = new MessageDialog("Super.. Contact data saved.");
+            await messageDialog.ShowAsync();
         }
 
-        public async void ParseFile(object sender, RoutedEventArgs e)
+        public async void SyncContactsFromDevice(object sender, RoutedEventArgs e)
         {
-            PhoneBill pb = new PhoneBill(_file);
-            pb.BillType = "STPPM";
-            pb.FilePassword = "";
+            Views.Busy.SetBusy(true, "Please Wait...We are mapping phone numbers to your contacts");
 
-            Views.Busy.SetBusy(true, "Please Wait...We are reading your bill information");
-            bool success = await pb.ReadPDFFile();
+            bool success = await PBAApplication.getInstance().SyncContactsFromDevice();
+            ContactList.Clear();
+            ContactList = PBAApplication.getInstance().GetAppContactList().ToList();
+
             Views.Busy.SetBusy(false);
 
             MessageDialog messageDialog;
 
             if (success)
             {
-                messageDialog = new MessageDialog("Super.. We have read your bill. You can analyze it now.");
+                messageDialog = new MessageDialog("Super.. Your contacts are mapped.");
             }
             else
             {
-                messageDialog = new MessageDialog("Oops !! Something went wrong, we could not understand your bill. Please try again.");
+                messageDialog = new MessageDialog("Oops !! Something went wrong, we could not read map contacts.");
             }
-
-            // Add to main List
-            PBAApplication.getInstance().AddBillToList(pb);
-
             await messageDialog.ShowAsync();
         }
 
