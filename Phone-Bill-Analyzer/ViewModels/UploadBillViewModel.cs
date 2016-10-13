@@ -109,14 +109,14 @@ namespace Phone_Bill_Analyzer.ViewModels
             if (success)
             {
                 messageDialog = new MessageDialog("Super.. We have read your bill. You can analyze it now.");
+
+                // Add to main List
+                PBAApplication.getInstance().AddBillToList(pb);
             }
             else
             {
                 messageDialog = new MessageDialog("Oops !! Something went wrong, we could not understand your bill. Please try again.");
             }
-
-            // Add to main List
-            PBAApplication.getInstance().AddBillToList(pb);
 
             await messageDialog.ShowAsync();
         }

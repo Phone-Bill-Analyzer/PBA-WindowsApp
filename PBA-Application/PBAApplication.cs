@@ -35,6 +35,9 @@ namespace PBA_Application
             _serviceProviderList = new List<ServiceProvider>();
             _serviceProviderList.Add(new ServiceProvider("STPPM","SingTel Postpaid"));
             _serviceProviderList.Add(new ServiceProvider("APPM", "AirTel Postpaid"));
+            _serviceProviderList.Add(new ServiceProvider("VPPM", "Vodafone Postpaid"));
+            _serviceProviderList.Add(new ServiceProvider("RPPM", "Reliance Postpaid"));
+            _serviceProviderList.Add(new ServiceProvider("TDPPM", "Tata Docomo Postpaid"));
         }
 
         public IEnumerable<ObservablePhoneBill> PhoneBillList

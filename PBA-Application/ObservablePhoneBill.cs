@@ -34,7 +34,11 @@ namespace PBA_Application
             get
             {
                 if (_phoneBill.BillType.Equals("STPPM")) { return "SingTel Bill"; }
-                return "";
+                if (_phoneBill.BillType.Equals("APPM")) { return "AirTel Bill"; }
+                if (_phoneBill.BillType.Equals("VPPM")) { return "Vodafone Bill"; }
+                if (_phoneBill.BillType.Equals("RPPM")) { return "Reliance Bill"; }
+                if (_phoneBill.BillType.Equals("TDPPM")) { return "Tata Docomo Bill"; }
+                return "Bill";
             }
         }
 
