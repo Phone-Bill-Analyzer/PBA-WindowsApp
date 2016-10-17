@@ -47,8 +47,13 @@
 
         <controls:PageHeader x:Name="pageHeader" RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" Text="Main Page">
+                             RelativePanel.AlignTopWithPanel="True" Text="Bill List">
 
+            <!--  primary commands  -->
+            <controls:PageHeader.PrimaryCommands>
+                <AppBarButton Icon="OpenFile" Click="{x:Bind ViewModel.GotoUploadBillPage}" Label="New Bill"/>
+            </controls:PageHeader.PrimaryCommands>
+            
             <!--  secondary commands  -->
             <controls:PageHeader.SecondaryCommands>
                 <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
@@ -58,20 +63,12 @@
 
         </controls:PageHeader>
 
-        <Button x:Name="uploadNewBill"
-                Margin="0,15,0,0"
-                Padding="20,0,20,0"
-                RelativePanel.AlignHorizontalCenterWithPanel="True"
-                RelativePanel.Below="pageHeader"
-                Click="{x:Bind ViewModel.GotoUploadBillPage}"
-                Content="Upload a New Bill"
-            />
-
-        <TextBlock x:Name="orText"
-                   Margin="0,5,0,0" Padding="20,0,20,0"
+        <TextBlock x:Name="Info_Text"
+                   Margin="0,15,0,0" Padding="20,0,20,0"
+                   FontSize="24"
                    RelativePanel.AlignHorizontalCenterWithPanel="True"
-                   RelativePanel.Below="uploadNewBill"
-                   Text="OR Select a bill to Analyze"
+                   RelativePanel.Below="pageHeader"
+                   Text="{Binding InfoText}" Foreground="#FF1463E8"
             />
 
         <ListView x:Name="billList"
@@ -83,7 +80,7 @@
                   IsItemClickEnabled="True"
                   SelectionMode="None"
                   ItemClick="OnPhoneBillSelected"
-                  RelativePanel.Below="orText">
+                  RelativePanel.Below="Info_Text">
 
             <ListView.ItemTemplate>
                 <DataTemplate>

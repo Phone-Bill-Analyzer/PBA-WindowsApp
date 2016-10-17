@@ -50,31 +50,23 @@
         <controls:PageHeader x:Name="pageHeader" Frame="{x:Bind Frame}"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" Text="Upload New Phone Bill" />
+                             RelativePanel.AlignTopWithPanel="True" Text="Upload New Phone Bill" >
 
-        <!--  content  -->
-        <Button x:Name="Sync_Contacts_From_Device"
-                Content="Synchronize Contacts from Device"
-                RelativePanel.Below="pageHeader"
-                Margin="10,5,0,0"
-                Click="{x:Bind ViewModel.SyncContactsFromDevice}" Width="Auto" >
-        </Button>
+            <controls:PageHeader.PrimaryCommands>
+                <AppBarButton Icon="Refresh" Click="{x:Bind ViewModel.SyncContactsFromDevice}" Label="Sync from Device"/>
+                <AppBarButton Icon="SaveLocal" Click="{x:Bind ViewModel.SaveContactData}" Label="Save"/>
+            </controls:PageHeader.PrimaryCommands>
+            
+        </controls:PageHeader>
 
-        <Button x:Name="Save_Contact_Data"
-                Content="Save Contact Data"
-                RelativePanel.Below="pageHeader"
-                RelativePanel.RightOf="Sync_Contacts_From_Device"
-                Margin="10,5,0,0"
-                Click="{x:Bind ViewModel.SaveContactData}" Width="Auto" >
-        </Button>
-        
+        <!--  content  -->       
         <ListView 
             ItemsSource="{Binding ContactList}" 
             Margin="10,20,5,5" 
             RelativePanel.AlignRightWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
             RelativePanel.AlignBottomWithPanel="True"
-            RelativePanel.Below="Sync_Contacts_From_Device">
+            RelativePanel.Below="pageHeader">
             
             <ListView.HeaderTemplate>
                 <DataTemplate>

@@ -15,12 +15,12 @@ namespace Phone_Bill_Analyzer.ViewModels
         {
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                Value = "Designtime value";
+                _infoText = "Designtime value";
             }
         }
 
-        string _Value = "Gas";
-        public string Value { get { return _Value; } set { Set(ref _Value, value); } }
+        string _infoText = "";
+        public string InfoText { get { return _infoText; } set { Set(ref _infoText, value); } }
 
         private List<ObservablePhoneBill> _PhoneBillList = PBAApplication.getInstance().PhoneBillList.ToList();
         public List<ObservablePhoneBill> PhoneBillList
@@ -33,10 +33,19 @@ namespace Phone_Bill_Analyzer.ViewModels
         {
             if (suspensionState.Any())
             {
-                Value = suspensionState[nameof(Value)]?.ToString();
+                _infoText = suspensionState[nameof(_infoText)]?.ToString();
             }
 
             PhoneBillList = PBAApplication.getInstance().PhoneBillList.ToList();
+
+            if (PhoneBillList.Count <= 0)
+            {
+                InfoText = "Upload a Bill to start analyzing";
+            }
+            else
+            {
+                InfoText = "Select a bill to analyze OR upload a new one";
+            }
 
             await Task.CompletedTask;
         }
@@ -45,7 +54,7 @@ namespace Phone_Bill_Analyzer.ViewModels
         {
             if (suspending)
             {
-                suspensionState[nameof(Value)] = Value;
+                suspensionState[nameof(_infoText)] = _infoText;
             }
             await Task.CompletedTask;
         }
@@ -60,7 +69,7 @@ namespace Phone_Bill_Analyzer.ViewModels
             NavigationService.Navigate(typeof(Views.UploadBill), "");
 
         public void GotoDetailsPage() =>
-            NavigationService.Navigate(typeof(Views.DetailPage), Value);
+            NavigationService.Navigate(typeof(Views.DetailPage), "");
 
         public void GotoSettings() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 0);
