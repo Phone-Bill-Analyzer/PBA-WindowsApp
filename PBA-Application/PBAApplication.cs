@@ -50,8 +50,9 @@ namespace PBA_Application
             get { return _serviceProviderList.AsEnumerable(); }
         }
 
-        internal bool DeletePhoneBill(string billNo)
+        public bool DeletePhoneBill(string billNo)
         {
+            ObservablePhoneBill old_bill = GetObservablePhoneBill(billNo);
             List<DBQuery> queryList = new List<DBQuery>();
             String sql;                 // The query itself
             DBQuery query;              // Query Object
@@ -69,6 +70,14 @@ namespace PBA_Application
             queryList.Add(query);
 
             bool success = dbHelper.executeQueries(queryList);
+            
+            if (old_bill != null)
+            {
+                _phoneBillList.Remove(old_bill);
+                _phoneBillDictionary.Remove(billNo);
+
+            }
+
             return success;
         }
 

@@ -97,13 +97,21 @@
         </StackPanel>
 
         <Button x:Name="Parse_File"
-                Content="Parse File"
+                Content="Read and Analyze the file"
                 Margin="15,5,5,5"
                 RelativePanel.Below="Password_Row"
                 Click="{x:Bind ViewModel.ParseFile}" >
         </Button>
 
-        <TextBlock Margin="15,10,5,5" LineHeight="24" RelativePanel.Below="Parse_File"
+        <TextBlock Margin="15,10,5,5" LineHeight="24" RelativePanel.Below="Parse_File" x:Name="FreeAppNote"
+                        TextWrapping="Wrap">
+            <Bold>Note: </Bold> You are using the free version of the app. 
+            In the free version, you can analyze only one bill. 
+            <LineBreak/>
+            If you want to analyze multiple bills, please upgrade to premium version.
+        </TextBlock>
+
+        <TextBlock Margin="15,10,5,5" LineHeight="24" RelativePanel.Below="FreeAppNote"
                         TextWrapping="Wrap">
             Select a Phone Bill in <Bold>PDF</Bold> format.
             <LineBreak/><LineBreak/>

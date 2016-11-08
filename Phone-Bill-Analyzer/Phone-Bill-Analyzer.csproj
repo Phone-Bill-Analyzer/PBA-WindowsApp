@@ -137,6 +137,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="analytics.xml" />
     <Content Include="Assets\BigLogo.scale-100.png" />
     <Content Include="Assets\BigLogo.scale-200.png" />
     <Content Include="Assets\Logo.scale-100.png" />
@@ -220,7 +221,7 @@
     <SDKReference Include="Microsoft.VCLibs, Version=14.0">
       <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
     </SDKReference>
-    <SDKReference Include="SQLite.UWP.2015, Version=3.14.2">
+    <SDKReference Include="SQLite.UWP.2015, Version=3.15.1">
       <Name>SQLite for Universal Windows Platform</Name>
     </SDKReference>
   </ItemGroup>

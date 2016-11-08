@@ -98,6 +98,26 @@ namespace Phone_Bill_Analyzer.ViewModels
                 return;
             }
 
+            if (_file == null)
+            {
+                messageDialog = new MessageDialog("Please select a file.");
+                await messageDialog.ShowAsync();
+                return;
+            }
+
+            // See if other bills exist
+            List<ObservablePhoneBill> pb_list = PBAApplication.getInstance().PhoneBillList.ToList();
+            int count = pb_list.Count();
+            if (count > 0)
+            {
+                // Issue a warning that old bills will be deleted.
+                foreach (ObservablePhoneBill pbill in pb_list)
+                {
+                    PBAApplication.getInstance().DeletePhoneBill(pbill.BillNo);
+                }
+            
+            }
+
             PhoneBill pb = new PhoneBill(_file);
             pb.BillType = _serviceProvider.Code;
             pb.FilePassword = FilePassword;

@@ -14,9 +14,14 @@ namespace PBA_Application
             _phoneBill = phone_bill;
         }
 
-        public string BillNo
+        public string BillNoText
         {
             get { return BillType + " No: " + _phoneBill._billNo; }
+        }
+
+        public string BillNo
+        {
+            get { return _phoneBill._billNo; }
         }
 
         public string DueDate
