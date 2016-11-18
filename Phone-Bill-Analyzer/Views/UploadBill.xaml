@@ -8,6 +8,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:Phone_Bill_Analyzer.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
       xmlns:vm="using:Phone_Bill_Analyzer.ViewModels" x:Name="ThisPage"
       mc:Ignorable="d">
 
@@ -76,9 +77,12 @@
                     Orientation="Horizontal">
 
             <Button x:Name="Browse_File"
-                Content="Browse File"
                 RelativePanel.Below="Service_Providers"
                 Click="{x:Bind ViewModel.BrowseFile}" >
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Symbol="OpenFile"/>
+                    <TextBlock Margin="5,0,0,0" Text="Browse File"></TextBlock>
+                </StackPanel>
             </Button>
 
             <TextBlock Margin="10,0,0,0" Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.FileName, Mode=OneWay}" />
@@ -97,22 +101,28 @@
         </StackPanel>
 
         <Button x:Name="Parse_File"
-                Content="Read and Analyze the file"
                 Margin="15,5,5,5"
                 RelativePanel.Below="Password_Row"
                 Click="{x:Bind ViewModel.ParseFile}" >
+            <StackPanel Orientation="Horizontal">
+                <SymbolIcon Symbol="Scan"/>
+                <TextBlock Margin="5,0,0,0" Text="Read and Analyze the file"></TextBlock>
+            </StackPanel>
         </Button>
 
         <TextBlock Margin="15,10,5,5" LineHeight="24" RelativePanel.Below="Parse_File" x:Name="FreeAppNote"
-                        TextWrapping="Wrap">
+                        TextWrapping="Wrap" Visibility="{x:Bind ViewModel.VisibilityMode}">
             <Bold>Note: </Bold> You are using the free version of the app. 
             In the free version, you can analyze only one bill. 
             <LineBreak/>
             If you want to analyze multiple bills, please upgrade to premium version.
         </TextBlock>
 
-        <TextBlock Margin="15,10,5,5" LineHeight="24" RelativePanel.Below="FreeAppNote"
-                        TextWrapping="Wrap">
+        <TextBlock x:Name="Help_Note" 
+                   Margin="15,10,5,5" 
+                   LineHeight="24" 
+                   RelativePanel.Below="FreeAppNote"
+                   TextWrapping="Wrap">
             Select a Phone Bill in <Bold>PDF</Bold> format.
             <LineBreak/><LineBreak/>
             <Bold>Note: </Bold> Do not scan the paper. Use the original PDF bill provided by the service provider.
@@ -122,7 +132,15 @@
             Please contact the developer if you would like us to support other service providers in your country.
         </TextBlock>
 
-
+            <UI:AdControl x:Name="AD_UI" 
+                          Margin="2,2,2,5"
+                          RelativePanel.AlignBottomWithPanel="True"
+                          RelativePanel.AlignHorizontalCenterWith="pageHeader"
+                          ApplicationId="71744b8e-bac7-4fdb-9168-32965ba39dc6"
+                      AdUnitId="11646702"
+                      Height="50"
+                      Width="320" />
+                
     </RelativePanel>
 </Page>
 

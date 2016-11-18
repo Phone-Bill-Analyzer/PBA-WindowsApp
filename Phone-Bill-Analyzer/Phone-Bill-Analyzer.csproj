@@ -19,6 +19,9 @@
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Phone-Bill-Analyzer_StoreKey.pfx</PackageCertificateKeyFile>
     <PackageCertificateThumbprint>705FE1FBFCEB737130095E42DBDF51DE0892765E</PackageCertificateThumbprint>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -101,6 +104,8 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\SettingsServices\SettingsService.cs" />
+    <Compile Include="ViewModels\InfoDisplayPageViewModel.cs" />
+    <Compile Include="ViewModels\UpgradePageViewModel.cs" />
     <Compile Include="ViewModels\ContactsPageViewModel.cs" />
     <Compile Include="ViewModels\UploadBillViewModel.cs" />
     <Compile Include="ViewModels\MainPageViewModel.cs" />
@@ -111,6 +116,12 @@
     </Compile>
     <Compile Include="Views\ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\InfoDisplayPage.xaml.cs">
+      <DependentUpon>InfoDisplayPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UpgradePage.xaml.cs">
+      <DependentUpon>UpgradePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UploadBill.xaml.cs">
       <DependentUpon>UploadBill.xaml</DependentUpon>
@@ -183,6 +194,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\InfoDisplayPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UpgradePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UploadBill.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -216,8 +235,15 @@
       <Project>{58efcfff-10f3-4ed6-a3e4-dd56092fcfd8}</Project>
       <Name>PBA-Application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PBA_BackgroundTasks\PBA_BackgroundTasks.csproj">
+      <Project>{0fce2365-1aa6-41a5-9091-ce523dbd90c5}</Project>
+      <Name>PBA_BackgroundTasks</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <SDKReference Include="Microsoft.Advertising.Xaml, Version=10.0">
+      <Name>Microsoft Advertising SDK for XAML</Name>
+    </SDKReference>
     <SDKReference Include="Microsoft.VCLibs, Version=14.0">
       <Name>Visual C++ 2015 Runtime for Universal Windows Platform Apps</Name>
     </SDKReference>

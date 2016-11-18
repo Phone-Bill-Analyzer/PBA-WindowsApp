@@ -1,4 +1,4 @@
-<Page x:Class="Phone_Bill_Analyzer.Views.DetailPage"
+﻿<Page x:Class="Phone_Bill_Analyzer.Views.UpgradePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:Behaviors="using:Template10.Behaviors"
@@ -8,12 +8,11 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:Phone_Bill_Analyzer.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
       xmlns:vm="using:Phone_Bill_Analyzer.ViewModels" x:Name="ThisPage"
       mc:Ignorable="d">
 
     <Page.DataContext>
-        <vm:DetailPageViewModel x:Name="ViewModel" />
+        <vm:UpgradePageViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
     <RelativePanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -51,55 +50,56 @@
         <controls:PageHeader x:Name="pageHeader" Frame="{x:Bind Frame}"
                              RelativePanel.AlignLeftWithPanel="True"
                              RelativePanel.AlignRightWithPanel="True"
-                             RelativePanel.AlignTopWithPanel="True" Text="Analyze Phone Bill" />
+                             RelativePanel.AlignTopWithPanel="True" Text="Upgrade to Premium Usage" >
+
+        </controls:PageHeader>
 
         <!--  content  -->
-        <Pivot x:Name="MyPivot" Grid.Row="1"
-               RelativePanel.AlignLeftWithPanel="True"
-               RelativePanel.AlignRightWithPanel="True"
-               RelativePanel.Above="AD_UI"
-               RelativePanel.Below="pageHeader">
+        <StackPanel Margin="10,10,10,10"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.Below="pageHeader">
 
-            <PivotItem Header="Summarize By Contacts">
-                <WebView 
-                    x:Name="Summarize_By_Contacts"
-                    Source="{x:Bind ViewModel.PI1}"
-                    NavigationStarting="{x:Bind ViewModel.OnNavigationStarting}"
-                    NavigationCompleted="{x:Bind ViewModel.OnNavigationCompleted}"/>
-            </PivotItem>
+            <TextBlock x:Name="product_name"
+                       Style="{StaticResource SubtitleTextBlockStyle}" 
+                       Text="Upgrade to Premium">
+            </TextBlock>
 
-            <PivotItem Header="Itemized Bill">
-                <WebView 
-                    x:Name="Itemized_Bill"
-                    Source="{x:Bind ViewModel.PI2}"
-                    NavigationStarting="{x:Bind ViewModel.OnNavigationStarting}"/>
-            </PivotItem>
+            <TextBlock Margin="0,15,0,0"
+                       Text="{x:Bind ViewModel.CurrentLicense}" 
+                       FontSize="22" 
+                       FontWeight="Bold">
+            </TextBlock>
 
-            <PivotItem Header="Top 5 Contacts">
-                <WebView 
-                    x:Name="Top_5_Contacts"
-                    Source="{x:Bind ViewModel.PI3}"
-                    NavigationStarting="{x:Bind ViewModel.OnNavigationStarting}"/>
-            </PivotItem>
+            <TextBlock Margin="0,15,0,0"
+                       FontSize="18"
+                       Visibility="{x:Bind ViewModel.VisibilityMode}">
+                
+                In the free version, you can analyze only one bill. 
+                <LineBreak/>
+                If you want to analyze multiple bills, please upgrade to premium version.
+                <LineBreak/><LineBreak/>
+                In the premium version, you get the following benefits.
+                <LineBreak/>
+                1. You can upload and analyze multiple bills.
+                <LineBreak/>
+                2. You can do advanced analysis by comparing bills from different months.
+                <LineBreak/>
+                3. No ads in Premium Version.
+            </TextBlock>
 
-            <PivotItem Header="Contact Group Summary">
-                <WebView 
-                    x:Name="Contact_Group_Summary"
-                    Source="{x:Bind ViewModel.PI4}"
-                    NavigationStarting="{x:Bind ViewModel.OnNavigationStarting}"/>
-            </PivotItem>
+            <Button Margin="20,30,0,0" 
+                    Click="{x:Bind ViewModel.UpgradeToPremium}"
+                    Visibility="{x:Bind ViewModel.VisibilityMode}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="5,0,0,0" Text="Upgrade to Premium for "></TextBlock>
+                    <TextBlock Margin="3,0,0,0" Text="{x:Bind ViewModel.PremiumPrice}"></TextBlock>
+                </StackPanel>
+            </Button>
 
-        </Pivot>
+        </StackPanel>
 
-        <UI:AdControl x:Name="AD_UI"
-                      Margin="2,2,2,5"
-                      ApplicationId="b6c5a5f6-96d6-48f1-991c-3d1251ab473c"
-                      AdUnitId="11652423"
-                      Height="50"
-                      RelativePanel.AlignBottomWithPanel="True"
-                      RelativePanel.AlignHorizontalCenterWith="pageHeader"
-                      Width="320" />
-        
     </RelativePanel>
 </Page>
 

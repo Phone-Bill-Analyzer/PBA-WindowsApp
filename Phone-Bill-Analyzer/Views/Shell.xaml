@@ -38,6 +38,19 @@
                 </StackPanel>
             </Controls:HamburgerButtonInfo>
 
+
+            <!--  Upgrade button  -->
+            <Controls:HamburgerButtonInfo ClearHistory="True" PageType="views:UpgradePage" 
+                                          AutomationProperties.Name="Jerry"
+                                          >
+                <StackPanel Orientation="Horizontal">
+                    <SymbolIcon Width="48" Height="48"
+                                Symbol="Shop" />
+                    <TextBlock Margin="12,0,0,0" VerticalAlignment="Center"
+                               Text="Upgrade" />
+                </StackPanel>
+            </Controls:HamburgerButtonInfo>
+
         </Controls:HamburgerMenu.PrimaryButtons>
 
         <Controls:HamburgerMenu.SecondaryButtons>

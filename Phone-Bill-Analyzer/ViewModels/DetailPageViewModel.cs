@@ -39,6 +39,7 @@ namespace Phone_Bill_Analyzer.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("DetailPage");
             BillNo = (suspensionState.ContainsKey(nameof(BillNo))) ? suspensionState[nameof(BillNo)]?.ToString() : parameter?.ToString();
             await Task.CompletedTask;
         }

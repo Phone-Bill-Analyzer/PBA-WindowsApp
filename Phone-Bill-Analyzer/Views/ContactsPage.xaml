@@ -8,6 +8,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:Phone_Bill_Analyzer.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
       xmlns:vm="using:Phone_Bill_Analyzer.ViewModels" x:Name="ThisPage"
       mc:Ignorable="d">
 
@@ -65,7 +66,7 @@
             Margin="10,20,5,5" 
             RelativePanel.AlignRightWithPanel="True"
             RelativePanel.AlignLeftWithPanel="True"
-            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.Above="AD_UI"
             RelativePanel.Below="pageHeader">
             
             <ListView.HeaderTemplate>
@@ -99,6 +100,14 @@
             </ListView.ItemTemplate>
         </ListView>
 
+        <UI:AdControl x:Name="AD_UI"
+                      Margin="2,2,2,5"
+                      ApplicationId="b6c5a5f6-96d6-48f1-991c-3d1251ab473c"
+                      AdUnitId="11652423"
+                      Height="50"
+                      RelativePanel.AlignBottomWithPanel="True"
+                      RelativePanel.AlignHorizontalCenterWith="pageHeader"
+                      Width="320" />
 
     </RelativePanel>
 </Page>

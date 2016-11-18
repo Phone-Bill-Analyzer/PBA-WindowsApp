@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Template10.Common;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
+using Windows.ApplicationModel.Store;
 using Windows.Storage;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
@@ -19,6 +20,13 @@ namespace Phone_Bill_Analyzer.ViewModels
     {
         public UploadBillViewModel()
         {
+        }
+
+        private Visibility _visibility_mode = Visibility.Visible;
+        public Visibility VisibilityMode
+        {
+            get { return _visibility_mode; }
+            set { Set(ref _visibility_mode, value); }
         }
 
         private ServiceProvider _serviceProvider;
@@ -39,6 +47,10 @@ namespace Phone_Bill_Analyzer.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
+            if (PBAApplication.getInstance().IsPremiumUser())
+            {
+                VisibilityMode = Visibility.Collapsed;
+            }
             //FileName = (suspensionState.ContainsKey(nameof(FileName))) ? suspensionState[nameof(FileName)]?.ToString() : parameter?.ToString();
             FilePassword = "";
             await Task.CompletedTask;
@@ -105,19 +117,31 @@ namespace Phone_Bill_Analyzer.ViewModels
                 return;
             }
 
-            // See if other bills exist
-            List<ObservablePhoneBill> pb_list = PBAApplication.getInstance().PhoneBillList.ToList();
+            PBAApplication app = PBAApplication.getInstance();
+            List<ObservablePhoneBill> pb_list = app.PhoneBillList.ToList();
             int count = pb_list.Count();
-            if (count > 0)
-            {
-                // Issue a warning that old bills will be deleted.
-                foreach (ObservablePhoneBill pbill in pb_list)
-                {
-                    PBAApplication.getInstance().DeletePhoneBill(pbill.BillNo);
-                }
-            
-            }
 
+            if (count > 0 && !app.IsPremiumUser())
+            {
+                messageDialog = new MessageDialog("You are using a free version of the app. Would you like to upgrade?");
+                messageDialog.Commands.Add(new UICommand("OK"));
+                messageDialog.Commands.Add(new UICommand("Later"));
+
+                messageDialog.DefaultCommandIndex = 0;
+                messageDialog.CancelCommandIndex = 1;
+
+                IUICommand command = await messageDialog.ShowAsync();
+                if (command.Label.Equals("OK"))
+                {
+                    NavigationService.Navigate(typeof(Views.UpgradePage), "");
+                    return;
+                }
+                else
+                {
+                    _deleteOldBills();
+                }
+            }
+            
             PhoneBill pb = new PhoneBill(_file);
             pb.BillType = _serviceProvider.Code;
             pb.FilePassword = FilePassword;
@@ -140,7 +164,24 @@ namespace Phone_Bill_Analyzer.ViewModels
 
             await messageDialog.ShowAsync();
         }
+        
+        private void _deleteOldBills()
+        {
+            // See if other bills exist
+            PBAApplication app = PBAApplication.getInstance();
 
+            List<ObservablePhoneBill> pb_list = app.PhoneBillList.ToList();
+            int count = pb_list.Count();
+            if (count > 0)
+            {
+                // Issue a warning that old bills will be deleted.
+                foreach (ObservablePhoneBill pbill in pb_list)
+                {
+                    app.DeletePhoneBill(pbill.BillNo);
+                }
+
+            }
+        }
     }
 }
 

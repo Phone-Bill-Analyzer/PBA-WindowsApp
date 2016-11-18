@@ -3,11 +3,10 @@ using System.Threading.Tasks;
 using Phone_Bill_Analyzer.Services.SettingsServices;
 using Windows.ApplicationModel.Activation;
 using Template10.Controls;
-using Template10.Common;
 using System;
-using System.Linq;
 using Windows.UI.Xaml.Data;
 using PBA_Application;
+using Windows.ApplicationModel.Background;
 
 namespace Phone_Bill_Analyzer
 {
@@ -54,11 +53,84 @@ namespace Phone_Bill_Analyzer
         {
             // long-running startup tasks go here
             //await Task.Delay(2000);
-            PBAApplication.getInstance();
+            PBAApplication.getInstance().InitializeApplication();
 
-            NavigationService.Navigate(typeof(Views.MainPage));
+            // Register backgroud task for Push Notifications
+            await registerBackgroundTaskForPushNotification();
+
+            var launchKind = DetermineStartCause(args);
+            switch (launchKind)
+            {
+                case AdditionalKinds.SecondaryTile:
+                    var tileargs = args as LaunchActivatedEventArgs;
+                    NavigationService.Navigate(typeof(Views.MainPage), tileargs.Arguments);
+                    break;
+
+                case AdditionalKinds.Toast:
+                    var toastargs = args as ToastNotificationActivatedEventArgs;
+                    if (toastargs.Argument.Equals("ShowInfoMessage"))
+                    {
+                        //NavigationService.Navigate(typeof(Views.InfoDisplayPage));
+                    }
+                    else
+                    {
+                        NavigationService.Navigate(typeof(Views.MainPage));
+                    }
+                    break;
+
+                case AdditionalKinds.JumpListItem:
+                    //NavigationService.Navigate(typeof(Views.InfoDisplayPage));
+                    break;
+
+                case AdditionalKinds.Primary:
+
+                case AdditionalKinds.Other:
+                    NavigationService.Navigate(typeof(Views.MainPage));
+                    break;
+            }
+
             await Task.CompletedTask;
         }
+
+        private async Task<bool> registerBackgroundTaskForPushNotification()
+        {
+            var taskRegistered = false;
+            var exampleTaskName = "PBA_NotificationBackgroundTask";
+
+            foreach (var task in BackgroundTaskRegistration.AllTasks)
+            {
+                if (task.Value.Name == exampleTaskName)
+                {
+                    taskRegistered = true;
+                    break;
+                }
+            }
+
+            if (taskRegistered)
+            {
+                //OutputText.Text = "Task already registered.";
+                return true;
+            }
+
+            // Register background task
+            BackgroundAccessStatus backgroundStatus = await BackgroundExecutionManager.RequestAccessAsync();
+
+            if (backgroundStatus != BackgroundAccessStatus.Denied && backgroundStatus != BackgroundAccessStatus.Unspecified)
+            {
+                var builder = new BackgroundTaskBuilder();
+
+                builder.Name = exampleTaskName;
+                builder.TaskEntryPoint = "PBA_BackgroundTasks.NotificationBackgroundTask";
+                builder.SetTrigger(new PushNotificationTrigger());
+                BackgroundTaskRegistration task = builder.Register();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
     }
 }
-

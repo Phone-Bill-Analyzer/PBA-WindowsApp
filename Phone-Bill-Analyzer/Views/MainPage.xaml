@@ -8,6 +8,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:Phone_Bill_Analyzer.Views"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:UI="using:Microsoft.Advertising.WinRT.UI"
       xmlns:vm="using:Phone_Bill_Analyzer.ViewModels" mc:Ignorable="d">
 
     <Page.DataContext>
@@ -72,15 +73,15 @@
             />
 
         <ListView x:Name="billList"
-                  Margin="15,10,15,55"
+                  Margin="15,10,15,10"
                   RelativePanel.AlignLeftWithPanel="True"
                   RelativePanel.AlignRightWithPanel="True"
-                  RelativePanel.AlignBottomWithPanel="True"
+                  RelativePanel.Below="Info_Text"
+                  RelativePanel.Above="AD_UI"
                   ItemsSource="{Binding PhoneBillList}"
                   IsItemClickEnabled="True"
                   SelectionMode="None"
-                  ItemClick="OnPhoneBillSelected"
-                  RelativePanel.Below="Info_Text">
+                  ItemClick="OnPhoneBillSelected">
 
             <ListView.ItemTemplate>
                 <DataTemplate>
@@ -92,6 +93,15 @@
             </ListView.ItemTemplate>
 
         </ListView>
+
+        <UI:AdControl x:Name="AD_UI"
+                      Margin="2,2,2,5"
+                      ApplicationId="b6c5a5f6-96d6-48f1-991c-3d1251ab473c"
+                      AdUnitId="11652423"
+                      Height="50"
+                      RelativePanel.AlignBottomWithPanel="True"
+                      RelativePanel.AlignHorizontalCenterWith="pageHeader"
+                      Width="320" />
 
     </RelativePanel>
 </Page>

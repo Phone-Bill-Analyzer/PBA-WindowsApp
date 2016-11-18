@@ -29,6 +29,7 @@ namespace Phone_Bill_Analyzer.ViewModels
 
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("ContactsPage");
             //FileName = (suspensionState.ContainsKey(nameof(FileName))) ? suspensionState[nameof(FileName)]?.ToString() : parameter?.ToString();
 
             ContactList = PBAApplication.getInstance().GetAppContactList().ToList();

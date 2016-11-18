@@ -31,6 +31,8 @@ namespace Phone_Bill_Analyzer.ViewModels
         
         public override async Task OnNavigatedToAsync(object parameter, NavigationMode mode, IDictionary<string, object> suspensionState)
         {
+            GoogleAnalytics.EasyTracker.GetTracker().SendView("MainPage");
+
             if (suspensionState.Any())
             {
                 _infoText = suspensionState[nameof(_infoText)]?.ToString();
