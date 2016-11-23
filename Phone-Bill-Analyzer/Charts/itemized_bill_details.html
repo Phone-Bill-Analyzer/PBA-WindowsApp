@@ -14,14 +14,17 @@
 				var data = new google.visualization.DataTable();
 				data.addColumn('string', 'Name');
 				data.addColumn('string', 'Date/Time');
+				data.addColumn('string', 'Duration');
 				data.addColumn('number', 'Amount');
 				data.addColumn('string', 'In/Out');
+				data.addColumn('string', 'Roaming Call');
+				data.addColumn('string', 'SMS');
 
 				var jsonData = JSON.parse(phone_bill.getAllBillDetails());
 
 				for(var i=0; i< jsonData.length; i++){
 					var amt = Math.round(jsonData[i].amount * 100) / 100;
-					data.addRow([jsonData[i].name,jsonData[i].date_time,amt,jsonData[i].direction]);
+					data.addRow([jsonData[i].name, jsonData[i].date_time,jsonData[i].duration,amt,jsonData[i].direction,jsonData[i].roaming,jsonData[i].sms]);
 				}
 
 				var control = new google.visualization.ControlWrapper({
@@ -37,7 +40,7 @@
 					containerId: 'chart_div',
 					chartType: 'Table',
 					view: {
-						columns: [0, 1, 2, 3]
+						columns: [0, 1, 2, 3, 4, 5, 6]
 					}
 				});
 

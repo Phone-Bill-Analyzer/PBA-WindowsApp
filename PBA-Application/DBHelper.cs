@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using Windows.ApplicationModel.Resources;
 
 namespace PBA_Application
 {
@@ -257,12 +255,28 @@ namespace PBA_Application
         {
             JArray resultData = new JArray();
 
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            var include_incomming_calls = localSettings.Values["Include_Incomming_Calls"];
+
             using (SQLiteConnection dbConn = new SQLiteConnection(dbPath))
             {
-                string sql = "select case when cn.Name is null then cd.PhoneNo else cn.Name end as n, "
+                string sql;
+
+                if (include_incomming_calls == null || include_incomming_calls.Equals("True"))
+                {
+                    sql = "select case when cn.Name is null then cd.PhoneNo else cn.Name end as n, "
                     + "sum(cd.Amount) as Amount from BillCallDetails as cd "
                     + "left outer join ContactNames as cn on cd.PhoneNo = cn.PhoneNo "
                     + "where cd.BillNo = ? group by n order by Amount desc";
+                }
+                else
+                {
+                    sql = "select case when cn.Name is null then cd.PhoneNo else cn.Name end as n, "
+                    + "sum(cd.Amount) as Amount from BillCallDetails as cd "
+                    + "left outer join ContactNames as cn on cd.PhoneNo = cn.PhoneNo "
+                    + "where cd.BillNo = ? AND cd.CallDirection <> 'In' group by n order by Amount desc";
+                }
+                
 
                 using (var statement = dbConn.Prepare(sql))
                 {
@@ -285,13 +299,27 @@ namespace PBA_Application
         internal JArray GetTop5ContactsByAmount(string billNo)
         {
             JArray resultData = new JArray();
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            var include_incomming_calls = localSettings.Values["Include_Incomming_Calls"];
 
             using (SQLiteConnection dbConn = new SQLiteConnection(dbPath))
             {
-                string sql = "select case when cn.Name is null then cd.PhoneNo else cn.Name end as n, "
+                string sql;
+
+                if (include_incomming_calls == null || include_incomming_calls.Equals("True"))
+                {
+                    sql = "select case when cn.Name is null then cd.PhoneNo else cn.Name end as n, "
                     + "sum(cd.Amount) as Amount from BillCallDetails as cd "
                     + "left outer join ContactNames as cn on cd.PhoneNo = cn.PhoneNo "
                     + "where cd.BillNo = ? group by n order by Amount desc limit 5";
+                }
+                else
+                {
+                    sql = "select case when cn.Name is null then cd.PhoneNo else cn.Name end as n, "
+                    + "sum(cd.Amount) as Amount from BillCallDetails as cd "
+                    + "left outer join ContactNames as cn on cd.PhoneNo = cn.PhoneNo "
+                    + "where cd.BillNo = ? AND cd.CallDirection <> 'In' group by n order by Amount desc limit 5";
+                }
 
                 using (var statement = dbConn.Prepare(sql))
                 {
@@ -315,12 +343,29 @@ namespace PBA_Application
         {
             JArray resultData = new JArray();
 
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            var include_incomming_calls = localSettings.Values["Include_Incomming_Calls"];
+
             using (SQLiteConnection dbConn = new SQLiteConnection(dbPath))
             {
-                string sql = "select case when cn.Name is null then cd.PhoneNo else cn.Name end as n, "
-                    + "cd.CallDate, cd.CallTime, cd.Amount as Amount, cd.CallDirection from BillCallDetails as cd "
+                string sql;
+
+                if (include_incomming_calls == null || include_incomming_calls.Equals("True"))
+                {
+                    sql = "select case when cn.Name is null then cd.PhoneNo else cn.Name end as n, "
+                    + "cd.CallDate, cd.CallTime, cd.CallDuration, cd.Amount as Amount, cd.CallDirection, "
+                    + "cd.IsRoaming, cd.IsSMS from BillCallDetails as cd "
                     + "left outer join ContactNames as cn on cd.PhoneNo = cn.PhoneNo "
                     + "where cd.BillNo = ? order by cd.CallTimeStamp";
+                }
+                else
+                {
+                    sql = "select case when cn.Name is null then cd.PhoneNo else cn.Name end as n, "
+                    + "cd.CallDate, cd.CallTime, cd.CallDuration, cd.Amount as Amount, cd.CallDirection, "
+                    + "cd.IsRoaming, cd.IsSMS from BillCallDetails as cd "
+                    + "left outer join ContactNames as cn on cd.PhoneNo = cn.PhoneNo "
+                    + "where cd.BillNo = ? AND cd.CallDirection <> 'In' order by cd.CallTimeStamp";
+                }
 
                 try
                 {
@@ -336,16 +381,20 @@ namespace PBA_Application
                             DateTime dt = DateTime.Parse(statement[1].ToString() + " " + statement[2].ToString());
                             row.Add("date_time", dt.ToString(CultureInfo.CurrentCulture.DateTimeFormat));
 
+                            row.Add("duration", statement[3].ToString());
+
                             try
                             {
-                                row.Add("amount", (double)statement[3]);
+                                row.Add("amount", (double)statement[4]);
                             }
                             catch(Exception e)
                             {
-                                row.Add("amount", statement[3].ToString());
+                                row.Add("amount", statement[4].ToString());
                             }
 
-                            row.Add("direction", statement[4].ToString());
+                            row.Add("direction", statement[5].ToString());
+                            row.Add("roadmin", statement[6].ToString());
+                            row.Add("sms", statement[7].ToString());
 
                             resultData.Add(row);
                         }
@@ -364,12 +413,28 @@ namespace PBA_Application
         {
             JArray resultData = new JArray();
 
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            var include_incomming_calls = localSettings.Values["Include_Incomming_Calls"];
+
             using (SQLiteConnection dbConn = new SQLiteConnection(dbPath))
             {
-                string sql = "select case when cg.GroupName is null then 'Others' else cg.GroupName end as GroupN, "
+                string sql;
+
+                if (include_incomming_calls == null || include_incomming_calls.Equals("True"))
+                {
+                    sql = "select case when cg.GroupName is null then 'Others' else cg.GroupName end as GroupN, "
                     + "sum(cd.Amount) as Amount from BillCallDetails as cd "
                     + "left outer join (select distinct PhoneNo, GroupName from ContactGroups) as cg "
                     + "on cd.PhoneNo = cg.PhoneNo where cd.BillNo = ? group by GroupN order by Amount desc";
+                }
+                else
+                {
+                    sql = "select case when cg.GroupName is null then 'Others' else cg.GroupName end as GroupN, "
+                    + "sum(cd.Amount) as Amount from BillCallDetails as cd "
+                    + "left outer join (select distinct PhoneNo, GroupName from ContactGroups) as cg "
+                    + "on cd.PhoneNo = cg.PhoneNo where cd.BillNo = ? AND cd.CallDirection <> 'In' group by GroupN order by Amount desc";
+                }
+                
 
                 using (var statement = dbConn.Prepare(sql))
                 {

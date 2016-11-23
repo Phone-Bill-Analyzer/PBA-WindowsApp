@@ -80,14 +80,20 @@
                                       RelativePanel.AlignLeftWithPanel="True"
                                       RelativePanel.Below="UseShellDrawnBackButtonToggleSwtich" />
 
+                        <ToggleSwitch x:Name="IncludeIncommingCalls" Header="Include Incomming Calls in Analysis"
+                                      IsOn="{Binding IncludeIncommingCalls, Mode=TwoWay}"
+                                      OffContent="Do not include incomming calls in Analysis" OnContent="Include incomming calls in Analysis"
+                                      RelativePanel.AlignLeftWithPanel="True"
+                                      RelativePanel.Below="UseLightThemeToggleSwitch" />
+
                     </RelativePanel>
 
                 </ScrollViewer>
             </PivotItem>
 
-            <!--  privacy  -->
+            <!--  Help  -->
             <PivotItem DataContext="{Binding SettingsPartViewModel}"
-                       Header="Privacy statement" Padding="0">
+                       Header="Help" Padding="0">
                 <ScrollViewer Margin="0,0,-12,0" VerticalScrollBarVisibility="Auto">
                     <TextBlock Margin="0,12,24,12" LineHeight="24"
                                TextWrapping="Wrap">

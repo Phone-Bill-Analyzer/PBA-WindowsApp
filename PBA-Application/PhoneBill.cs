@@ -122,7 +122,12 @@ namespace PBA_Application
 
                     file_data.Dispose();
 
+                    // Save Bill Details to DB
                     SaveToDB();
+
+                    // Map it to Contacts and Save Contacts As well to DB
+                    await PBAApplication.getInstance().SyncContactsFromDevice();
+
                 }
                 catch (Exception ex)
                 {

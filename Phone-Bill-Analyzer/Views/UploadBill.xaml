@@ -134,6 +134,7 @@
 
             <UI:AdControl x:Name="AD_UI" 
                           Margin="2,2,2,5"
+                          Visibility="{x:Bind ViewModel.VisibilityMode}"
                           RelativePanel.AlignBottomWithPanel="True"
                           RelativePanel.AlignHorizontalCenterWith="pageHeader"
                           ApplicationId="71744b8e-bac7-4fdb-9168-32965ba39dc6"

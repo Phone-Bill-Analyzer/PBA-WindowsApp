@@ -58,7 +58,7 @@
             <!--  secondary commands  -->
             <controls:PageHeader.SecondaryCommands>
                 <AppBarButton Click="{x:Bind ViewModel.GotoSettings}" Label="Settings" />
-                <AppBarButton Click="{x:Bind ViewModel.GotoPrivacy}" Label="Privacy" />
+                <AppBarButton Click="{x:Bind ViewModel.GotoHelp}" Label="Help" />
                 <AppBarButton Click="{x:Bind ViewModel.GotoAbout}" Label="About" />
             </controls:PageHeader.SecondaryCommands>
 
@@ -96,6 +96,7 @@
 
         <UI:AdControl x:Name="AD_UI"
                       Margin="2,2,2,5"
+                      Visibility="{x:Bind ViewModel.VisibilityMode}"
                       ApplicationId="b6c5a5f6-96d6-48f1-991c-3d1251ab473c"
                       AdUnitId="11652423"
                       Height="50"

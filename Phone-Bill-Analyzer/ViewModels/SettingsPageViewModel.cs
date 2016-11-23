@@ -41,6 +41,19 @@ namespace Phone_Bill_Analyzer.ViewModels
             set { _settings.AppTheme = value ? ApplicationTheme.Light : ApplicationTheme.Dark; base.RaisePropertyChanged(); }
         }
 
+        public bool IncludeIncommingCalls
+        {
+            get { return _settings.IncludeIncommingCalls; }
+            set {
+
+                var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+                localSettings.Values["Include_Incomming_Calls"] = value.ToString();
+
+                _settings.IncludeIncommingCalls = value;
+                base.RaisePropertyChanged();
+            }
+        }
+
     }
 
     public class AboutPartViewModel : ViewModelBase
@@ -60,7 +73,6 @@ namespace Phone_Bill_Analyzer.ViewModels
             }
         }
 
-        public Uri RateMe => new Uri("http://aka.ms/template10");
     }
 }
 

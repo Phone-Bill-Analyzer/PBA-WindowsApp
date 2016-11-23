@@ -1,11 +1,11 @@
 using Template10.Mvvm;
 using System.Collections.Generic;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Template10.Services.NavigationService;
 using Windows.UI.Xaml.Navigation;
 using PBA_Application;
+using Windows.UI.Xaml;
 
 namespace Phone_Bill_Analyzer.ViewModels
 {
@@ -17,6 +17,13 @@ namespace Phone_Bill_Analyzer.ViewModels
             {
                 _infoText = "Designtime value";
             }
+        }
+
+        private Visibility _visibility_mode = Visibility.Visible;
+        public Visibility VisibilityMode
+        {
+            get { return _visibility_mode; }
+            set { Set(ref _visibility_mode, value); }
         }
 
         string _infoText = "";
@@ -49,6 +56,15 @@ namespace Phone_Bill_Analyzer.ViewModels
                 InfoText = "Select a bill to analyze OR upload a new one";
             }
 
+            if (PBAApplication.getInstance().IsPremiumUser())
+            {
+                VisibilityMode = Visibility.Collapsed;
+            }
+            else
+            {
+                VisibilityMode = Visibility.Visible;
+            }
+
             await Task.CompletedTask;
         }
 
@@ -76,7 +92,7 @@ namespace Phone_Bill_Analyzer.ViewModels
         public void GotoSettings() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 0);
 
-        public void GotoPrivacy() =>
+        public void GotoHelp() =>
             NavigationService.Navigate(typeof(Views.SettingsPage), 1);
 
         public void GotoAbout() =>

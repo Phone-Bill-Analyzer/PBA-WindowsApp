@@ -20,6 +20,13 @@ namespace Phone_Bill_Analyzer.ViewModels
         public ContactsPageViewModel()
         {}
 
+        private Visibility _visibility_mode = Visibility.Visible;
+        public Visibility VisibilityMode
+        {
+            get { return _visibility_mode; }
+            set { Set(ref _visibility_mode, value); }
+        }
+
         private List<ContactData> _contactList = new List<ContactData>();
         public List<ContactData> ContactList
         {
@@ -33,6 +40,15 @@ namespace Phone_Bill_Analyzer.ViewModels
             //FileName = (suspensionState.ContainsKey(nameof(FileName))) ? suspensionState[nameof(FileName)]?.ToString() : parameter?.ToString();
 
             ContactList = PBAApplication.getInstance().GetAppContactList().ToList();
+
+            if (PBAApplication.getInstance().IsPremiumUser())
+            {
+                VisibilityMode = Visibility.Collapsed;
+            }
+            else
+            {
+                VisibilityMode = Visibility.Visible;
+            }
 
             await Task.CompletedTask;
         }

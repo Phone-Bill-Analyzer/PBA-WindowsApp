@@ -51,6 +51,10 @@ namespace Phone_Bill_Analyzer.ViewModels
             {
                 VisibilityMode = Visibility.Collapsed;
             }
+            else
+            {
+                VisibilityMode = Visibility.Visible;
+            }
             //FileName = (suspensionState.ContainsKey(nameof(FileName))) ? suspensionState[nameof(FileName)]?.ToString() : parameter?.ToString();
             FilePassword = "";
             await Task.CompletedTask;

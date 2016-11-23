@@ -29,6 +29,15 @@ namespace Phone_Bill_Analyzer.Services.SettingsServices
             }
         }
 
+        public bool IncludeIncommingCalls
+        {
+            get { return _helper.Read<bool>(nameof(IncludeIncommingCalls), true); }
+            set
+            {
+                _helper.Write(nameof(IncludeIncommingCalls), value);
+            }
+        }
+
         public ApplicationTheme AppTheme
         {
             get

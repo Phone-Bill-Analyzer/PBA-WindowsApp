@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Template10.Common;
 using Template10.Mvvm;
 using Template10.Services.NavigationService;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -20,6 +21,13 @@ namespace Phone_Bill_Analyzer.ViewModels
             {
                 BillNo = "Designtime value";
             }
+        }
+
+        private Visibility _visibility_mode = Visibility.Visible;
+        public Visibility VisibilityMode
+        {
+            get { return _visibility_mode; }
+            set { Set(ref _visibility_mode, value); }
         }
 
         private string _pi1 = "ms-appx-web:///Charts/all_contacts_table.html";
@@ -41,6 +49,16 @@ namespace Phone_Bill_Analyzer.ViewModels
         {
             GoogleAnalytics.EasyTracker.GetTracker().SendView("DetailPage");
             BillNo = (suspensionState.ContainsKey(nameof(BillNo))) ? suspensionState[nameof(BillNo)]?.ToString() : parameter?.ToString();
+
+            if (PBAApplication.getInstance().IsPremiumUser())
+            {
+                VisibilityMode = Visibility.Collapsed;
+            }
+            else
+            {
+                VisibilityMode = Visibility.Visible;
+            }
+
             await Task.CompletedTask;
         }
 

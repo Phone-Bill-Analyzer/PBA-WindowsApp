@@ -39,11 +39,11 @@ namespace PBA_Application
             LoadPhoneBillListFromDB();
 
             _serviceProviderList = new List<ServiceProvider>();
-            _serviceProviderList.Add(new ServiceProvider("STPPM","SingTel Postpaid"));
-            _serviceProviderList.Add(new ServiceProvider("APPM", "AirTel Postpaid"));
-            _serviceProviderList.Add(new ServiceProvider("VPPM", "Vodafone Postpaid"));
-            _serviceProviderList.Add(new ServiceProvider("RPPM", "Reliance Postpaid"));
-            _serviceProviderList.Add(new ServiceProvider("TDPPM", "Tata Docomo Postpaid"));
+            _serviceProviderList.Add(new ServiceProvider("STPPM","SingTel Postpaid - Singapore"));
+            _serviceProviderList.Add(new ServiceProvider("APPM", "AirTel Postpaid - India"));
+            _serviceProviderList.Add(new ServiceProvider("VPPM", "Vodafone Postpaid - India"));
+            _serviceProviderList.Add(new ServiceProvider("RPPM", "Reliance Postpaid - India"));
+            _serviceProviderList.Add(new ServiceProvider("TDPPM", "Tata Docomo Postpaid - India"));
             
         }
 

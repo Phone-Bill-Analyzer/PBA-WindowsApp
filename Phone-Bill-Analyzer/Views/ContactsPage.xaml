@@ -102,6 +102,7 @@
 
         <UI:AdControl x:Name="AD_UI"
                       Margin="2,2,2,5"
+                      Visibility="{x:Bind ViewModel.VisibilityMode}"
                       ApplicationId="b6c5a5f6-96d6-48f1-991c-3d1251ab473c"
                       AdUnitId="11652423"
                       Height="50"
